@@ -4,6 +4,7 @@ from twilio.twiml.messaging_response import MessagingResponse
 from bot.tokenizer import NLTKTokenizer
 from bot.detokenizer import NLTKDetokenizer
 from bot.filter import NLTKStopWordRemover, NLTKWordNetLemmatizer
+from bot.recognizer import NLTKRecognizer
 
 app = Flask(__name__)
 
@@ -42,3 +43,15 @@ def test():
     result = NLTKDetokenizer().process(tokens)
 
     return result
+
+@app.route('/extract_name', methods=['GET'])
+def extract_name():
+    incoming_msg = request.args.get('message')
+
+    #operations
+    tokens = NLTKTokenizer().process(incoming_msg)
+    tokens = NLTKStopWordRemover().process(tokens)
+    tokens = NLTKWordNetLemmatizer().process(tokens)
+    result = NLTKRecognizer().recognize_persons(tokens)
+
+    return "your name is in [" + ', '.join(result) + "]"

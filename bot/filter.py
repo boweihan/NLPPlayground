@@ -38,9 +38,6 @@ class NLTKWordNetLemmatizer(TokenOperationInterface):
     def process(self, tokens):
         lemmatizer = WordNetLemmatizer()
 
-        # find pos tag of words
-        nltk.pos_tag(tokens)
-
         return [lemmatizer.lemmatize(token, get_wordnet_pos(token)) for token in tokens]
 
 def get_wordnet_pos(word):
