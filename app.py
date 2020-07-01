@@ -1,6 +1,9 @@
 from flask import Flask, request
 import requests
 from twilio.twiml.messaging_response import MessagingResponse
+from bot.tokenizer import NLTKTokenizer
+from bot.detokenizer import NLTKDetokenizer
+from bot.filter import NLTKStopWordRemover, NLTKSnowballStemmer
 
 app = Flask(__name__)
 
@@ -27,3 +30,15 @@ def bot():
     if not responded:
         msg.body('I only know about famous quotes and cats, sorry!')
     return str(resp)
+
+@app.route('/test', methods=['GET'])
+def test():
+    incoming_msg = request.args.get('message')
+
+    # operations
+    tokens = NLTKTokenizer().process(incoming_msg)
+    tokens = NLTKStopWordRemover().process(tokens)
+    tokens = NLTKSnowballStemmer().process(tokens)
+    result = NLTKDetokenizer().process(tokens)
+
+    return result
