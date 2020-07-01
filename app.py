@@ -3,7 +3,7 @@ import requests
 from twilio.twiml.messaging_response import MessagingResponse
 from bot.tokenizer import NLTKTokenizer
 from bot.detokenizer import NLTKDetokenizer
-from bot.filter import NLTKStopWordRemover, NLTKSnowballStemmer
+from bot.filter import NLTKStopWordRemover, NLTKWordNetLemmatizer
 
 app = Flask(__name__)
 
@@ -38,7 +38,7 @@ def test():
     # operations
     tokens = NLTKTokenizer().process(incoming_msg)
     tokens = NLTKStopWordRemover().process(tokens)
-    tokens = NLTKSnowballStemmer().process(tokens)
+    tokens = NLTKWordNetLemmatizer().process(tokens)
     result = NLTKDetokenizer().process(tokens)
 
     return result
