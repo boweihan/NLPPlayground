@@ -4,7 +4,6 @@ class NLTKRecognizer():
     def recognize_persons(self, tokens):
         tagged = nltk.pos_tag(tokens)
         chunks = nltk.chunk.ne_chunk(tagged)
-        print(chunks)
         return get_continuous_chunks(chunks)
 
 def get_continuous_chunks(chunked):
