@@ -1,4 +1,5 @@
 from flask import Flask, request
+from flask_cors import CORS, cross_origin
 import requests
 from twilio.twiml.messaging_response import MessagingResponse
 from bot.tokenizer import NLTKTokenizer
@@ -7,6 +8,7 @@ from bot.filter import NLTKStopWordRemover, NLTKWordNetLemmatizer
 from bot.recognizer import NLTKRecognizer
 
 app = Flask(__name__)
+cors = CORS(app, resources={r"*": {"origins": "*"}})
 
 @app.route('/bot', methods=['POST'])
 def bot():
@@ -32,26 +34,29 @@ def bot():
         msg.body('I only know about famous quotes and cats, sorry!')
     return str(resp)
 
-@app.route('/test', methods=['GET'])
-def test():
-    incoming_msg = request.args.get('message')
+@app.route('/parse/<category>', methods=['GET'])
+def parse_with_NLTK(category):
+    input = request.args.get('input')
 
     # operations
-    tokens = NLTKTokenizer().process(incoming_msg)
-    tokens = NLTKStopWordRemover().process(tokens)
-    tokens = NLTKWordNetLemmatizer().process(tokens)
-    result = NLTKDetokenizer().process(tokens)
+    # tokens = NLTKTokenizer().process(input)
+    # tokens = NLTKStopWordRemover().process(tokens)
+    # tokens = NLTKWordNetLemmatizer().process(tokens)
+    # result = NLTKRecognizer().recognize_persons(tokens)
 
-    return result
+    # category handling
+    if category == 'boolean':
+        result = category
+    elif category == 'multiple':
+        result = category
+    elif category == 'rating':
+        tokens = NLTKTokenizer().process(input)
+        result = NLTKRecognizer().recognize_numbers(tokens)
+    elif category == 'name':
+        tokens = NLTKTokenizer().process(input)
+        result = NLTKRecognizer().recognize_persons(tokens)
+    elif category == 'numeric':
+        tokens = NLTKTokenizer().process(input)
+        result = NLTKRecognizer().recognize_numbers(tokens)
 
-@app.route('/extract_name', methods=['GET'])
-def extract_name():
-    incoming_msg = request.args.get('message')
-
-    #operations
-    tokens = NLTKTokenizer().process(incoming_msg)
-    tokens = NLTKStopWordRemover().process(tokens)
-    tokens = NLTKWordNetLemmatizer().process(tokens)
-    result = NLTKRecognizer().recognize_persons(tokens)
-
-    return "your name is in [" + ', '.join(result) + "]"
+    return "Category: " + category + ", identified: [" + ', '.join(result) + "]"

@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import Head from "next/head";
 import Layout, { siteTitle } from "../../components/Layout";
 import QuestionCard from "../../components/QuestionCard";
 import utilStyles from "../../styles/utils.module.css";
 import axios from "axios";
+import { SERVER } from "../../config";
 
 const categories = {
   BOOLEAN: "boolean",
@@ -16,8 +17,10 @@ const categories = {
 const fetchResponse = async (input, category) => {
   let response;
   try {
-    response = await axios.get(`/bot/message/${category}?${input}`);
+    response = (await axios.get(SERVER + `/parse/${category}?input=${input}`))
+      .data;
   } catch (e) {
+    console.log(e);
     response = e.message;
   }
   return response;
@@ -36,6 +39,7 @@ export default function ModelOne() {
   const [nameMsg, setNameMsg] = useState("");
   const [numericMsg, setNumericMsg] = useState("");
 
+  console.log(booleanInput);
   const cards = [
     {
       heading: "Booleans",
@@ -43,7 +47,7 @@ export default function ModelOne() {
       "No".`,
       value: booleanInput,
       response: booleanMsg,
-      onChange: (evt) => setBooleanInput(evt.value),
+      onChange: (evt) => setBooleanInput(evt.currentTarget.value),
       onClick: async () =>
         setBooleanMsg(await fetchResponse(booleanInput, categories.BOOLEAN)),
     },
@@ -53,7 +57,7 @@ export default function ModelOne() {
       Lexus, D - Other`,
       value: multipleChoiceInput,
       response: multipleChoiceMsg,
-      onChange: (evt) => setMultipleChoiceInput(evt.value),
+      onChange: (evt) => setMultipleChoiceInput(evt.currentTarget.value),
       onClick: async () =>
         setMultipleChoiceMsg(
           await fetchResponse(multipleChoiceInput, categories.MULTIPLE_CHOICE)
@@ -64,7 +68,7 @@ export default function ModelOne() {
       question: `One a scale of 1-10, how happy are you right now?`,
       value: ratingInput,
       response: ratingMsg,
-      onChange: (evt) => setRatingInput(evt.value),
+      onChange: (evt) => setRatingInput(evt.currentTarget.value),
       onClick: async () =>
         setRatingMsg(await fetchResponse(ratingInput, categories.RATING)),
     },
@@ -73,7 +77,7 @@ export default function ModelOne() {
       question: `What is your full name?`,
       value: nameInput,
       response: nameMsg,
-      onChange: (evt) => setNameInput(evt.value),
+      onChange: (evt) => setNameInput(evt.currentTarget.value),
       onClick: async () =>
         setNameMsg(await fetchResponse(nameInput, categories.FULL_NAME)),
     },
@@ -82,7 +86,7 @@ export default function ModelOne() {
       question: `What is your current salary?`,
       value: numericInput,
       response: numericMsg,
-      onChange: (evt) => setNumericInput(evt.value),
+      onChange: (evt) => setNumericInput(evt.currentTarget.value),
       onClick: async () =>
         setNumericMsg(await fetchResponse(numericInput, categories.NUMERIC)),
     },

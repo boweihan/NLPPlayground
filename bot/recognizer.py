@@ -6,6 +6,11 @@ class NLTKRecognizer():
         chunks = nltk.chunk.ne_chunk(tagged)
         return get_continuous_chunks(chunks)
 
+    def recognize_numbers(self, tokens):
+        tagged = nltk.pos_tag(tokens)
+        chunks = nltk.chunk.ne_chunk(tagged)
+        return get_numeric_entities(chunks)
+
 def get_continuous_chunks(chunked):
     continuous_chunk = []
     current_chunk = []
@@ -20,3 +25,13 @@ def get_continuous_chunks(chunked):
         else:
             continue
     return continuous_chunk
+
+
+def get_numeric_entities(chunked):
+    numbers = []
+    for i in chunked:
+        if type(i) == tuple:
+            code = i[1]
+            if code == 'CD':
+                numbers.append(i[0])
+    return numbers
