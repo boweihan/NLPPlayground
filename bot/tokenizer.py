@@ -2,8 +2,8 @@ from bot.interface import TextOperationInterface
 from nltk.tokenize import word_tokenize
 import stanza
 
-# by default, stanza pipelines are created with 5 preprocessors
-# see https://www.analyticsvidhya.com/blog/2019/02/Stanza-nlp-library-python/
+# by default, stanza pipelines are created with preprocessors
+# see https://stanfordnlp.github.io/stanza/pipeline.html#build-pipeline-from-a-config-dictionary
 nlp = stanza.Pipeline("en")
 
 """

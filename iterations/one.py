@@ -38,10 +38,13 @@ class ExampleOne:
         if not nameList:
             return "Sorry, we were unable to identify your name."
 
-        return "[" + " ".join(nameList) + "]"
+        return "Full Name: [" + " ".join(nameList) + "]"
 
     def parseNumber(self, input):
-        tokens = NLTKTokenizer().process(input)
-        result = NLTKRecognizer().recognize_numbers(tokens)
-        return "identified: [" + ", ".join(result) + "]"
+        numberList = StanzaRecognizer().recognize_numbers(input)
+
+        if not numberList:
+            return "Sorry, we were unable to identify a number."
+
+        return "You've reported your salary as $" + numberList[0] + " / year"
 

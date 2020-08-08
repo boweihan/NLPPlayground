@@ -36,7 +36,12 @@ class StanzaRecognizer:
         return list(filter(lambda x: x[0].isupper() and x not in stop_words, result))
 
     def recognize_numbers(self, text):
-        return None
+        # NOTE: this does not convert words to number yet
+        # may be able to leverage - https://nlp.stanford.edu/nlp/javadoc/javanlp/edu/stanford/nlp/ie/NumberNormalizer.html
+        doc = StanzaAnnotator().process(text.lower())
+        return [
+            w.text for sent in doc.sentences for w in sent.words if w.upos in ["NUM"]
+        ]
 
 
 """

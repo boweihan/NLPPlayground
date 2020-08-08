@@ -74,7 +74,7 @@ export default function ExampleOne() {
     },
     {
       heading: "Name Identification",
-      question: `What is your full name?`,
+      question: `What is your full name? i.e. "John Smith"`,
       value: nameInput,
       response: nameMsg,
       onChange: (evt) => setNameInput(evt.currentTarget.value),
@@ -83,7 +83,7 @@ export default function ExampleOne() {
     },
     {
       heading: "Numerical Identification",
-      question: `What is your current salary?`,
+      question: `What is your current annual salary? i.e. 40000`,
       value: numericInput,
       response: numericMsg,
       onChange: (evt) => setNumericInput(evt.currentTarget.value),
