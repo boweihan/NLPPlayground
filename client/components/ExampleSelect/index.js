@@ -3,12 +3,12 @@ import { useRouter } from "next/router";
 import styles from "./index.module.css";
 
 const options = [
-  { value: "/models/one", label: "Model #1" },
-  { value: "/models/two", label: "Model #2" },
-  { value: "/models/three", label: "Model #3" },
+  { value: "/examples/one", label: "Example #1" },
+  { value: "/examples/two", label: "Example #2" },
+  { value: "/examples/three", label: "Example #3" },
 ];
 
-export default function ModelSelect() {
+export default function ExampleSelect() {
   const router = useRouter();
 
   const onChange = (option) => {

@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import Head from "next/head";
 import Layout, { siteTitle } from "../../components/Layout";
 import QuestionCard from "../../components/QuestionCard";
@@ -17,8 +17,9 @@ const categories = {
 const fetchResponse = async (input, category) => {
   let response;
   try {
-    response = (await axios.get(SERVER + `/parse/${category}?input=${input}`))
-      .data;
+    response = (
+      await axios.get(SERVER + `/example/1/${category}?input=${input}`)
+    ).data;
   } catch (e) {
     console.log(e);
     response = e.message;
@@ -26,7 +27,7 @@ const fetchResponse = async (input, category) => {
   return response;
 };
 
-export default function ModelOne() {
+export default function ExampleOne() {
   const [booleanInput, setBooleanInput] = useState("");
   const [multipleChoiceInput, setMultipleChoiceInput] = useState("");
   const [ratingInput, setRatingInput] = useState("");
@@ -39,7 +40,6 @@ export default function ModelOne() {
   const [nameMsg, setNameMsg] = useState("");
   const [numericMsg, setNumericMsg] = useState("");
 
-  console.log(booleanInput);
   const cards = [
     {
       heading: "Booleans",
@@ -95,9 +95,9 @@ export default function ModelOne() {
   return (
     <Layout>
       <Head>
-        <title>{siteTitle} - Model 1</title>
+        <title>{siteTitle} - Example 1</title>
       </Head>
-      <h1 className={utilStyles.heading2Xl}>Model 1</h1>
+      <h1 className={utilStyles.heading2Xl}>Example 1</h1>
       {cards.map((card) => (
         <QuestionCard
           key={card.heading}

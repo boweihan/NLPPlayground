@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Layout, { siteTitle } from "../components/Layout";
-import ModelSelect from "../components/ModelSelect";
+import ExampleSelect from "../components/ExampleSelect";
 import utilStyles from "../styles/utils.module.css";
 
 const name = "NLP Playground";
@@ -17,7 +17,7 @@ export default function Home() {
         alt={name}
       />
       <h1 className={utilStyles.heading2Xl}>{name}</h1>
-      <ModelSelect />
+      <ExampleSelect />
     </Layout>
   );
 }

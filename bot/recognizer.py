@@ -1,6 +1,14 @@
+from bot.annotator import StanzaAnnotator
+from bot.wordbank import stop_words
 import nltk
+import stanza
 
-class NLTKRecognizer():
+"""
+Recognize specific entities with NLTK
+"""
+
+
+class NLTKRecognizer:
     def recognize_persons(self, tokens):
         tagged = nltk.pos_tag(tokens)
         chunks = nltk.chunk.ne_chunk(tagged)
@@ -10,6 +18,31 @@ class NLTKRecognizer():
         tagged = nltk.pos_tag(tokens)
         chunks = nltk.chunk.ne_chunk(tagged)
         return get_numeric_entities(chunks)
+
+
+"""
+Recognize specific entities with Stanza
+"""
+
+
+class StanzaRecognizer:
+    def recognize_persons(self, text):
+        doc = StanzaAnnotator().process(text.lower())
+        result = [
+            w.text.capitalize() if w.upos in ["PROPN", "NNP"] else w.text
+            for sent in doc.sentences
+            for w in sent.words
+        ]
+        return list(filter(lambda x: x[0].isupper() and x not in stop_words, result))
+
+    def recognize_numbers(self, text):
+        return None
+
+
+"""
+helpers
+"""
+
 
 def get_continuous_chunks(chunked):
     continuous_chunk = []
@@ -32,6 +65,6 @@ def get_numeric_entities(chunked):
     for i in chunked:
         if type(i) == tuple:
             code = i[1]
-            if code == 'CD':
+            if code == "CD":
                 numbers.append(i[0])
     return numbers
