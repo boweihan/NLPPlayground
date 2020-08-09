@@ -1,6 +1,6 @@
 import stanza
 
-stanza.download("en")
+stanza.download("en", package="ewt")
 
 from flask import Flask, request
 from flask_cors import CORS, cross_origin
