@@ -1,6 +1,7 @@
 import stanza
 
 stanza.download("en", package="ewt")
+stanza.download("en", package="OntoNotes")
 
 from flask import Flask, request
 from flask_cors import CORS, cross_origin
@@ -50,4 +51,4 @@ def example_one(number, category):
 
 
 if __name__ == "__main__":
-    app.run(threaded=True, host="0.0.0.0", port=8081)
+    app.run(threaded=False, host="0.0.0.0", port=8081)

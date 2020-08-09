@@ -1,7 +1,6 @@
 from bot.annotator import StanzaAnnotator
 from bot.wordbank import stop_words
 import nltk
-import stanza
 
 """
 Recognize specific entities with NLTK
