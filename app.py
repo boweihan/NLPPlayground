@@ -1,8 +1,6 @@
 import stanza
-import nltk
 
 stanza.download("en")
-nltk.download("stopwords")
 
 from flask import Flask, request
 from flask_cors import CORS, cross_origin
