@@ -1,16 +1,14 @@
+import stanza
+import nltk
+
+stanza.download("en")
+nltk.download("stopwords")
+
 from flask import Flask, request
 from flask_cors import CORS, cross_origin
 from twilio.twiml.messaging_response import MessagingResponse
 from iterations.one import ExampleOne
 import requests
-
-# import stanza
-
-# asset downloads
-# import stanza
-# stanza.download('en')
-# nltk.download()
-# nlp = stanza.Pipeline('en')
 
 # api configuration
 app = Flask(__name__)
@@ -52,3 +50,6 @@ def example_one(number, category):
 
     return "Please enter a valid category"
 
+
+if __name__ == "__main__":
+    app.run(threaded=True, host="0.0.0.0", port=8081)
