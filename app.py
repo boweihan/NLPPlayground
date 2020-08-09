@@ -1,5 +1,6 @@
 import stanza
 
+# packages are downloaded separately to minimize startup time for Heroku deployment
 stanza.download("en", package="ewt")
 stanza.download("en", package="OntoNotes")
 
