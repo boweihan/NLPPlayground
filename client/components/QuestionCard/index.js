@@ -1,3 +1,6 @@
+import { useState } from "react";
+import ReactTooltip from "react-tooltip";
+import DotLoader from "react-spinners/DotLoader";
 import utilStyles from "../../styles/utils.module.css";
 
 const InlineResponse = ({ msg }) => {
@@ -11,7 +14,18 @@ export default function QuestionCard({
   onChange,
   onClick,
   response,
+  tip,
 }) {
+  const [loading, setLoading] = useState(false);
+
+  const onClickWithLoading = async () => {
+    setLoading(true);
+    setTimeout(async () => {
+      await onClick();
+      setLoading(false);
+    }, 300);
+  };
+
   return (
     <div className={utilStyles.card}>
       <h2 className={utilStyles.headingMd}>{heading}</h2>
@@ -22,17 +36,23 @@ export default function QuestionCard({
           className={utilStyles.input}
           onChange={onChange}
           value={value}
-          onKeyPress={(evt) => {
+          onKeyPress={async (evt) => {
             if (evt.charCode === 13) {
-              onClick();
+              onClickWithLoading();
             }
           }}
         />
-        <button className={utilStyles.button} onClick={onClick}>
-          Process
+        <button className={utilStyles.button} onClick={onClickWithLoading}>
+          {loading ? <DotLoader size={15} color={"white"} /> : <>Process</>}
         </button>
       </div>
       <InlineResponse msg={response} />
+      <p className={utilStyles.tooltip} data-tip data-for={heading}>
+        -- Technical Implementation Notes --
+      </p>
+      <ReactTooltip id={heading} aria-haspopup="true">
+        {tip}
+      </ReactTooltip>
     </div>
   );
 }

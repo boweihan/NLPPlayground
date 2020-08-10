@@ -48,8 +48,27 @@ export default function ExampleOne() {
       value: booleanInput,
       response: booleanMsg,
       onChange: (evt) => setBooleanInput(evt.currentTarget.value),
-      onClick: async () =>
-        setBooleanMsg(await fetchResponse(booleanInput, categories.BOOLEAN)),
+      onClick: async () => {
+        setBooleanMsg("");
+        setBooleanMsg(await fetchResponse(booleanInput, categories.BOOLEAN));
+      },
+      tip: (
+        <>
+          <p>
+            User input is compared against a bank of words that represent
+            confirmation or opposition.
+          </p>
+          <ul>
+            <li>All phrases representing confirmation are treated as "YES".</li>
+            <li>All phrases representing opposition are treated as "NO".</li>
+            <li>Matching is case insensitive.</li>
+          </ul>
+          <p>This is a case where a database of words is likely adequate.</p>
+          <i>
+            <p>Example: yes, yeah, affirmative, naw, nope</p>
+          </i>
+        </>
+      ),
     },
     {
       heading: "Multiple Choice",
@@ -58,10 +77,27 @@ export default function ExampleOne() {
       value: multipleChoiceInput,
       response: multipleChoiceMsg,
       onChange: (evt) => setMultipleChoiceInput(evt.currentTarget.value),
-      onClick: async () =>
+      onClick: async () => {
+        setMultipleChoiceMsg("");
         setMultipleChoiceMsg(
           await fetchResponse(multipleChoiceInput, categories.MULTIPLE_CHOICE)
-        ),
+        );
+      },
+      tip: (
+        <>
+          <p>
+            User input is validated to match either the option (i.e. A) or
+            keywords in the response (i.e. Toyota).
+          </p>
+          <ul>
+            <li>Matching is case insensitive.</li>
+            <li>Failure to match is treated as an invalid response.</li>
+          </ul>
+          <i>
+            <p>Example: a, A, Toyota, toyota, Lexus</p>
+          </i>
+        </>
+      ),
     },
     {
       heading: "Rating Scale",
@@ -69,8 +105,24 @@ export default function ExampleOne() {
       value: ratingInput,
       response: ratingMsg,
       onChange: (evt) => setRatingInput(evt.currentTarget.value),
-      onClick: async () =>
-        setRatingMsg(await fetchResponse(ratingInput, categories.RATING)),
+      onClick: async () => {
+        setRatingMsg("");
+        setRatingMsg(await fetchResponse(ratingInput, categories.RATING));
+      },
+      tip: (
+        <>
+          <p>User input is compared against a set of valid inputs (1 to 10)</p>
+          <ul>
+            <li>Numbers can be parsed as exact matches.</li>
+            <li>Error messages for out-of-bound inputs</li>
+          </ul>
+          <p>This example does not leverage numerical recognition.</p>
+          <p>Rating scale questions likely have a one letter response.</p>
+          <i>
+            <p>Example: 1, 3, 5, 7, 11</p>
+          </i>
+        </>
+      ),
     },
     {
       heading: "Name Identification",
@@ -78,8 +130,28 @@ export default function ExampleOne() {
       value: nameInput,
       response: nameMsg,
       onChange: (evt) => setNameInput(evt.currentTarget.value),
-      onClick: async () =>
-        setNameMsg(await fetchResponse(nameInput, categories.FULL_NAME)),
+      onClick: async () => {
+        setNameMsg("");
+        setNameMsg(await fetchResponse(nameInput, categories.FULL_NAME));
+      },
+      tip: (
+        <>
+          <p>User input is annotated and parsed using Stanford NLP models.</p>
+          <ul>
+            <li>
+              Input is filtered to words representing proper nouns representing
+              names.
+            </li>
+            <li>Names are concatenated to represent a full name.</li>
+            <li>Model annotation is case insensitive.</li>
+            <li>Order is used as a differentiator for name order.</li>
+          </ul>
+          <i>
+            <p>Example: My name is George Bush</p>
+            <p>Example: Gary Yip is my full name</p>
+          </i>
+        </>
+      ),
     },
     {
       heading: "Numerical Identification",
@@ -87,8 +159,26 @@ export default function ExampleOne() {
       value: numericInput,
       response: numericMsg,
       onChange: (evt) => setNumericInput(evt.currentTarget.value),
-      onClick: async () =>
-        setNumericMsg(await fetchResponse(numericInput, categories.NUMERIC)),
+      onClick: async () => {
+        setNumericMsg("");
+        setNumericMsg(await fetchResponse(numericInput, categories.NUMERIC));
+      },
+      tip: (
+        <>
+          <p>User input is annotated and parsed using Stanford NLP models.</p>
+          <ul>
+            <li>Input is filtered to valid numbers.</li>
+            <li>Only the first number is considered.</li>
+            <li>
+              This model doesn't handle written numbers (i.e. Fourty Thousand)
+            </li>
+          </ul>
+          <i>
+            <p>Example: 40000, 40,000, My salary is $60,000</p>
+            <p>Example: I'm paid about 50000 bucks every year</p>
+          </i>
+        </>
+      ),
     },
   ];
 
@@ -99,15 +189,7 @@ export default function ExampleOne() {
       </Head>
       <h1 className={utilStyles.heading2Xl}>Example 1</h1>
       {cards.map((card) => (
-        <QuestionCard
-          key={card.heading}
-          heading={card.heading}
-          question={card.question}
-          value={card.value}
-          response={card.response}
-          onChange={card.onChange}
-          onClick={card.onClick}
-        />
+        <QuestionCard key={card.heading} {...card} />
       ))}
     </Layout>
   );
