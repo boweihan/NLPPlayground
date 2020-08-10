@@ -50,7 +50,12 @@ export default function QuestionCard({
       <p className={utilStyles.tooltip} data-tip data-for={heading}>
         -- Technical Implementation Notes --
       </p>
-      <ReactTooltip id={heading} aria-haspopup="true">
+      <ReactTooltip
+        id={heading}
+        backgroundColor="black"
+        effect="solid"
+        aria-haspopup="true"
+      >
         {tip}
       </ReactTooltip>
     </div>
